@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ContactTable from '@/components/ContactTable';
 import { parseContactFile, Contact } from '@/lib/contact-parser';
-import { Trash2, Download } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
+import { useSettings } from '@/context/SettingsContext';
 
 export default function ContactsPage() {
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [isProcessing, setIsProcessing] = useState(false);
+    const { t } = useSettings();
 
     // Load from local storage on mount
     useEffect(() => {
@@ -50,8 +52,8 @@ export default function ContactsPage() {
         <div className="space-y-8 max-w-5xl mx-auto">
             <div className="flex justify-between items-end">
                 <div>
-                    <h1 className="text-4xl font-bold mb-2 text-white">Address Book</h1>
-                    <p className="text-gray-400">Import and manage your VIP contact list.</p>
+                    <h1 className="text-4xl font-bold mb-2">{t.contacts.title}</h1>
+                    <p className="text-gray-400">{t.contacts.subtitle}</p>
                 </div>
 
                 {contacts.length > 0 && (
@@ -60,7 +62,7 @@ export default function ContactsPage() {
                         className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors text-sm font-medium"
                     >
                         <Trash2 size={16} />
-                        Clear All
+                        {t.contacts.clear}
                     </button>
                 )}
             </div>
@@ -72,13 +74,13 @@ export default function ContactsPage() {
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                             <span className="w-2 h-8 bg-purple-500 rounded-full"></span>
-                            Imported Contacts
+                            {t.contacts.imported}
                         </h2>
                         <ContactTable contacts={contacts} />
                     </div>
                 ) : (
                     <div className="text-center py-12 text-gray-500 border border-dashed border-gray-800 rounded-xl">
-                        No contacts yet. Upload a file to get started.
+                        {t.contacts.upload.desc}
                     </div>
                 )}
             </div>

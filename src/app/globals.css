@@ -1,44 +1,94 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
+/* Theme Variables */
 :root {
-  /* Dynamic Palette - Deep Space & Magic */
-  --background: #030014;
-  --foreground: #ffffff;
-  
-  --card: #111029;
-  --card-foreground: #ffffff;
-  
-  --popover: #111029;
-  --popover-foreground: #ffffff;
-  
-  --primary: #9d4edd;
-  --primary-foreground: #ffffff;
-  
-  --secondary: #ff007f;
-  --secondary-foreground: #ffffff;
-  
-  --muted: #2d2b55;
-  --muted-foreground: #a1a1aa;
-  
-  --accent: #5a189a;
-  --accent-foreground: #ffffff;
-  
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  
-  --border: #2d2b55;
-  --input: #1a1b36;
-  --ring: #9d4edd;
-  
-  --radius: 12px;
-  
-  /* Gradients */
-  --gradient-magic: linear-gradient(135deg, #9d4edd 0%, #ff007f 100%);
-  --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.0) 100%);
-  --glass: rgba(17, 16, 41, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  /* Default: Magic Theme (Deep Space) */
+  --font-main: 'Outfit', sans-serif;
 }
 
+[data-theme='magic'] {
+  --background: #030014;
+  --foreground: #ffffff;
+
+  --sidebar: rgba(3, 0, 20, 0.95);
+  --glass: rgba(17, 16, 41, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+
+  --primary: #9d4edd;
+  --primary-glow: rgba(157, 78, 221, 0.5);
+  --secondary: #ff007f;
+
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-accent: #c084fc;
+
+  --input-bg: #1a1b36;
+  --input-border: #2d2b55;
+
+  /* Gradients */
+  --bg-image:
+    radial-gradient(circle at 15% 50%, rgba(157, 78, 221, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(255, 0, 127, 0.15), transparent 25%);
+  --magic-gradient: linear-gradient(135deg, #9d4edd 0%, #ff007f 100%);
+}
+
+[data-theme='light'] {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --sidebar: #ffffff;
+  --glass: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --glass-highlight: rgba(0, 0, 0, 0.02);
+
+  --primary: #3b82f6;
+  --primary-glow: rgba(59, 130, 246, 0.2);
+  --secondary: #6366f1;
+
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-accent: #3b82f6;
+
+  --input-bg: #ffffff;
+  --input-border: #e2e8f0;
+
+  /* Gradients */
+  --bg-image: none;
+  --magic-gradient: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+}
+
+[data-theme='daker'] {
+  /* Brutalist / Daker / Pink Theme */
+  --background: #fff1f2;
+  /* Light Pinkish */
+  --foreground: #000000;
+
+  --sidebar: #ffffff;
+  --glass: #ffffff;
+  --glass-border: #000000;
+  --glass-highlight: transparent;
+
+  --primary: #000000;
+  --primary-glow: transparent;
+  --secondary: #000000;
+
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-accent: #000000;
+
+  --input-bg: #ffffff;
+  --input-border: #000000;
+
+  --radius: 0px;
+  /* Brutalist squared edges */
+
+  /* Gradients */
+  --bg-image: none;
+  --magic-gradient: #000000;
+}
+
+/* Global Reset & Base */
 * {
   box-sizing: border-box;
   padding: 0;
@@ -55,57 +105,81 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Outfit', sans-serif;
-  
-  /* Deep textured background */
-  background-image: 
-    radial-gradient(circle at 15% 50%, rgba(157, 78, 221, 0.15), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(255, 0, 127, 0.15), transparent 25%);
+  font-family: var(--font-main);
+  background-image: var(--bg-image);
   background-attachment: fixed;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Utilities */
+/* Common Classes */
 .glass-panel {
   background: var(--glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius, 12px);
+  /* Daker shadow */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='daker'] .glass-panel {
+  box-shadow: 4px 4px 0px 0px #000000;
+  /* Brutalist shadow */
+  border: 2px solid #000000;
 }
 
 .magic-text {
-  background: var(--gradient-magic);
+  background: var(--magic-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-weight: 700;
 }
 
+[data-theme='daker'] .magic-text {
+  color: #000000;
+  /* No gradient for brutalist */
+  background: none;
+}
+
 .btn-primary {
-  background: var(--gradient-magic);
+  background: var(--magic-gradient);
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 12px);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(157, 78, 221, 0.3);
+  box-shadow: 0 4px 15px var(--primary-glow);
+}
+
+[data-theme='daker'] .btn-primary {
+  background: #22c55e;
+  /* Green button from screenshot */
+  color: white;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px 0px #000000;
+  border-radius: 4px;
+  /* Slight round */
+}
+
+[data-theme='daker'] .btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px #000000;
 }
 
 .btn-primary:hover {
   filter: brightness(1.1);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(157, 78, 221, 0.5);
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+[data-theme='daker'] .btn-primary:hover {
+  transform: none;
+  filter: none;
 }
 
-/* Layout Grid */
+/* Layout */
 .app-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -113,12 +187,19 @@ body {
 }
 
 .sidebar {
-  background: rgba(3, 0, 20, 0.95);
-  border-right: 1px solid var(--border);
+  background: var(--sidebar);
+  border-right: 1px solid var(--glass-border);
   padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  transition: background-color 0.3s ease;
+}
+
+[data-theme='daker'] .sidebar {
+  border-right: 2px solid #000000;
+  box-shadow: 4px 0px 0px 0px #000000 inset;
+  /* Maybe inner shadow or just simple border */
 }
 
 .main-content {
@@ -127,40 +208,47 @@ body {
 }
 
 /* Inputs */
-input, textarea, select {
-  background: var(--input);
-  border: 1px solid var(--border);
+input,
+textarea,
+select {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   color: var(--foreground);
   padding: 0.75rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 12px);
   width: 100%;
   font-family: inherit;
   transition: border-color 0.2s;
 }
 
-input:focus, textarea:focus, select:focus {
+[data-theme='daker'] input {
+  border: 2px solid #000000;
+  border-radius: 4px;
+}
+
+input:focus {
   outline: none;
-  border-color: var(--ring);
+  border-color: var(--primary);
 }
 
-/* Table */
-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Typography Overrides based on theme */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
 }
 
-th, td {
-  text-align: left;
-  padding: 1rem;
-  border-bottom: 1px solid var(--border);
+p,
+span,
+div {
+  color: var(--text-primary);
 }
 
-th {
-  color: var(--muted-foreground);
-  font-weight: 500;
-  font-size: 0.875rem;
-}
-
-tr:hover {
-  background: rgba(255, 255, 255, 0.02);
+.text-gray-400,
+.text-gray-300,
+.text-gray-500 {
+  color: var(--text-secondary);
 }

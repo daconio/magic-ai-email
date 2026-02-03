@@ -2,15 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { Contact } from '@/lib/contact-parser';
-import { FileText, Video, Globe, Download, Play } from 'lucide-react';
+import { FileText, Video, Globe, Download } from 'lucide-react';
 import AnimationPreview from '@/components/AnimationPreview';
 import { generatePDF } from '@/lib/pdf-generator';
-import clsx from 'clsx'; // Assuming clsx is installed as I did earlier
+import clsx from 'clsx';
+import { useSettings } from '@/context/SettingsContext';
 
 export default function CreatePage() {
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
     const [activeTab, setActiveTab] = useState<'pdf' | 'animation' | 'web'>('pdf');
+    const { t } = useSettings();
 
     useEffect(() => {
         const saved = localStorage.getItem('magic_contacts');
@@ -32,14 +34,14 @@ export default function CreatePage() {
     return (
         <div className="max-w-6xl mx-auto space-y-8 h-full">
             <div>
-                <h1 className="text-4xl font-bold mb-2 text-white">Creative Studio</h1>
-                <p className="text-gray-400">Transform your message into diverse formats.</p>
+                <h1 className="text-4xl font-bold mb-2">{t.create.title}</h1>
+                <p className="text-gray-400">{t.create.subtitle}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 h-[600px]">
                 {/* Contact Selector */}
                 <div className="md:col-span-3 glass-panel p-4 overflow-y-auto">
-                    <h3 className="font-semibold text-gray-300 mb-4 sticky top-0 bg-[#111029] py-2 z-10">Select Target</h3>
+                    <h3 className="font-semibold text-gray-300 mb-4 sticky top-0 bg-transparent py-2 z-10 backdrop-blur-md">{t.create.selectTarget}</h3>
                     <div className="space-y-2">
                         {contacts.length === 0 && <p className="text-sm text-gray-500">No contacts found.</p>}
                         {contacts.map((contact, i) => (
@@ -53,7 +55,7 @@ export default function CreatePage() {
                                         : "hover:bg-white/5 text-gray-400"
                                 )}
                             >
-                                <div className="font-medium text-white">{contact.name}</div>
+                                <div className="font-medium">{contact.name}</div>
                                 <div className="text-xs truncate">{contact.email}</div>
                             </button>
                         ))}
@@ -66,28 +68,28 @@ export default function CreatePage() {
                     <div className="flex gap-4 border-b border-white/10 pb-4">
                         <button
                             onClick={() => setActiveTab('pdf')}
-                            className={clsx("flex items-center gap-2 px-4 py-2 rounded-lg transition-all", activeTab === 'pdf' ? "bg-white/10 text-white" : "text-gray-400 hover:text-white")}
+                            className={clsx("flex items-center gap-2 px-4 py-2 rounded-lg transition-all", activeTab === 'pdf' ? "bg-white/10" : "text-gray-400 hover:text-white")}
                         >
-                            <FileText size={18} /> PDF Document
+                            <FileText size={18} /> {t.create.tabs.pdf}
                         </button>
                         <button
                             onClick={() => setActiveTab('animation')}
-                            className={clsx("flex items-center gap-2 px-4 py-2 rounded-lg transition-all", activeTab === 'animation' ? "bg-white/10 text-white" : "text-gray-400 hover:text-white")}
+                            className={clsx("flex items-center gap-2 px-4 py-2 rounded-lg transition-all", activeTab === 'animation' ? "bg-white/10" : "text-gray-400 hover:text-white")}
                         >
-                            <Video size={18} /> Animation
+                            <Video size={18} /> {t.create.tabs.animation}
                         </button>
                         <button
                             onClick={() => setActiveTab('web')}
-                            className={clsx("flex items-center gap-2 px-4 py-2 rounded-lg transition-all", activeTab === 'web' ? "bg-white/10 text-white" : "text-gray-400 hover:text-white")}
+                            className={clsx("flex items-center gap-2 px-4 py-2 rounded-lg transition-all", activeTab === 'web' ? "bg-white/10" : "text-gray-400 hover:text-white")}
                         >
-                            <Globe size={18} /> Web Page
+                            <Globe size={18} /> {t.create.tabs.web}
                         </button>
                     </div>
 
                     {/* Canvas */}
                     <div className="flex-1 glass-panel p-8 flex flex-col items-center justify-center bg-black/40 relative">
                         {!selectedContact ? (
-                            <p className="text-gray-500">Select a contact from the left to start creating.</p>
+                            <p className="text-gray-500">{t.create.preview.select}</p>
                         ) : (
                             <>
                                 {activeTab === 'pdf' && (
@@ -104,7 +106,7 @@ export default function CreatePage() {
                                             onClick={handleDownloadPDF}
                                             className="btn-primary flex items-center gap-2 mx-auto"
                                         >
-                                            <Download size={18} /> Download PDF
+                                            <Download size={18} /> {t.create.preview.download}
                                         </button>
                                     </div>
                                 )}
@@ -123,12 +125,12 @@ export default function CreatePage() {
                                             <div className="w-2 h-2 rounded-full bg-green-400"></div>
                                         </div>
                                         <div className="p-8 text-center text-black">
-                                            <h1 className="text-3xl font-bold mb-4">Welcome, {selectedContact.name}!</h1>
-                                            <p className="text-gray-600 mb-8">We have created a personal landing page just for you.</p>
-                                            <button className="bg-blue-600 text-white px-6 py-2 rounded">Check Offer</button>
+                                            <h1 className="text-3xl font-bold mb-4">{t.create.preview.welcome}, {selectedContact.name}!</h1>
+                                            <p className="text-gray-600 mb-8">{t.create.preview.landing}</p>
+                                            <button className="bg-blue-600 text-white px-6 py-2 rounded">{t.create.preview.check}</button>
                                         </div>
                                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                                            <button className="bg-white text-black px-6 py-2 rounded-full font-bold">Preview Live</button>
+                                            <button className="bg-white text-black px-6 py-2 rounded-full font-bold">{t.create.preview.live}</button>
                                         </div>
                                     </div>
                                 )}

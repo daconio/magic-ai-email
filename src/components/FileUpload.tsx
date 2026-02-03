@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Upload, FileSpreadsheet, Loader2 } from 'lucide-react';
+import { Upload, Loader2 } from 'lucide-react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
+import { useSettings } from '@/context/SettingsContext';
 
 interface FileUploadProps {
     onFileSelect: (file: File) => void;
@@ -12,6 +13,7 @@ interface FileUploadProps {
 
 export default function FileUpload({ onFileSelect, isProcessing }: FileUploadProps) {
     const [isDragging, setIsDragging] = useState(false);
+    const { t } = useSettings();
 
     const handleDragOver = useCallback((e: React.DragEvent) => {
         e.preventDefault();
@@ -76,11 +78,11 @@ export default function FileUpload({ onFileSelect, isProcessing }: FileUploadPro
                 </div>
 
                 <div>
-                    <h3 className="text-lg font-semibold text-white mb-1">
-                        {isProcessing ? 'Processing...' : 'Upload Contacts'}
+                    <h3 className="text-lg font-semibold mb-1">
+                        {isProcessing ? t.contacts.upload.processing : t.contacts.upload.title}
                     </h3>
                     <p className="text-sm text-gray-400">
-                        Drag & drop Excel or CSV file here, or click to browse
+                        {t.contacts.upload.desc}
                     </p>
                 </div>
             </div>

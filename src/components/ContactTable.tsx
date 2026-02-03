@@ -1,13 +1,15 @@
 'use client';
 
 import { Contact } from '@/lib/contact-parser';
-import { Mail, Phone, Building, User } from 'lucide-react';
+import { useSettings } from '@/context/SettingsContext';
 
 interface ContactTableProps {
     contacts: Contact[];
 }
 
 export default function ContactTable({ contacts }: ContactTableProps) {
+    const { t } = useSettings();
+
     if (contacts.length === 0) return null;
 
     return (
@@ -16,10 +18,10 @@ export default function ContactTable({ contacts }: ContactTableProps) {
                 <table className="w-full">
                     <thead>
                         <tr className="bg-white/5">
-                            <th className="text-left py-4 px-6">Name</th>
-                            <th className="text-left py-4 px-6">Email</th>
-                            <th className="text-left py-4 px-6">Company</th>
-                            <th className="text-left py-4 px-6">Role</th>
+                            <th className="text-left py-4 px-6">{t.contacts.table.name}</th>
+                            <th className="text-left py-4 px-6">{t.contacts.table.email}</th>
+                            <th className="text-left py-4 px-6">{t.contacts.table.company}</th>
+                            <th className="text-left py-4 px-6">{t.contacts.table.role}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5">
@@ -30,7 +32,7 @@ export default function ContactTable({ contacts }: ContactTableProps) {
                                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-xs font-bold text-white">
                                             {contact.name.charAt(0).toUpperCase()}
                                         </div>
-                                        <span className="font-medium text-white">{contact.name}</span>
+                                        <span className="font-medium">{contact.name}</span>
                                     </div>
                                 </td>
                                 <td className="py-4 px-6 text-gray-300 group-hover:text-purple-300 transition-colors">
@@ -48,7 +50,7 @@ export default function ContactTable({ contacts }: ContactTableProps) {
                 </table>
             </div>
             <div className="p-4 border-t border-white/10 text-sm text-gray-500 text-center">
-                Showing {contacts.length} contacts
+                {t.contacts.table.showing} {contacts.length} {t.contacts.table.contacts}
             </div>
         </div>
     );

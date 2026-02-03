@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Contact } from '@/lib/contact-parser';
 import { Send, Users, CheckCircle } from 'lucide-react';
 import clsx from 'clsx';
+import { useSettings } from '@/context/SettingsContext';
 
 export default function SendPage() {
     const [contacts, setContacts] = useState<Contact[]>([]);
@@ -12,6 +13,7 @@ export default function SendPage() {
     const [content, setContent] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [sentSuccess, setSentSuccess] = useState(false);
+    const { t } = useSettings();
 
     useEffect(() => {
         const saved = localStorage.getItem('magic_contacts');
@@ -61,8 +63,8 @@ export default function SendPage() {
                 <div className="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center text-green-400">
                     <CheckCircle size={48} />
                 </div>
-                <h1 className="text-4xl font-bold text-white">Campaign Sent!</h1>
-                <p className="text-xl text-gray-400">Your magic has been delivered to {selectedContacts.length} recipients.</p>
+                <h1 className="text-4xl font-bold">{t.send.success.title}</h1>
+                <p className="text-xl text-gray-400">{t.send.success.desc} {selectedContacts.length} recipients.</p>
                 <button
                     onClick={() => {
                         setSentSuccess(false);
@@ -71,7 +73,7 @@ export default function SendPage() {
                     }}
                     className="btn-primary mt-8"
                 >
-                    Send Another
+                    {t.send.success.more}
                 </button>
             </div>
         );
@@ -84,10 +86,10 @@ export default function SendPage() {
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="font-semibold text-gray-300 flex items-center gap-2">
                         <Users size={18} />
-                        Recipients
+                        {t.send.recipients}
                     </h3>
                     <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded-full">
-                        {selectedContacts.length} selected
+                        {selectedContacts.length} {t.send.selected}
                     </span>
                 </div>
 
@@ -110,7 +112,7 @@ export default function SendPage() {
                                 {selectedContacts.includes(contact.email) && <CheckCircle size={12} className="text-white" />}
                             </div>
                             <div className="overflow-hidden">
-                                <p className="text-sm font-medium text-white truncate">{contact.name}</p>
+                                <p className="text-sm font-medium truncate">{contact.name}</p>
                                 <p className="text-xs text-gray-500 truncate">{contact.email}</p>
                             </div>
                         </div>
@@ -121,21 +123,21 @@ export default function SendPage() {
             {/* Composer */}
             <div className="lg:col-span-2 glass-panel p-6 flex flex-col h-full space-y-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Subject Line</label>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">{t.send.subject}</label>
                     <input
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
-                        placeholder="Make it catchy..."
+                        placeholder="..."
                         className="text-lg font-medium"
                     />
                 </div>
 
                 <div className="flex-1 flex flex-col">
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Email Content</label>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">{t.send.content}</label>
                     <textarea
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
-                        placeholder="Paste your generated content here..."
+                        placeholder="..."
                         className="flex-1 resize-none p-4 font-mono text-sm leading-relaxed"
                     />
                 </div>
@@ -147,11 +149,11 @@ export default function SendPage() {
                         className="btn-primary flex items-center gap-2 px-8"
                     >
                         {isSending ? (
-                            <span className="animate-pulse">Sending Magic...</span>
+                            <span className="animate-pulse">{t.send.button.sending}</span>
                         ) : (
                             <>
                                 <Send size={18} />
-                                Send Campaign
+                                {t.send.button.send}
                             </>
                         )}
                     </button>
