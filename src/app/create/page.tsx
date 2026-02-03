@@ -5,6 +5,7 @@ import { Contact } from '@/lib/contact-parser';
 import { FileText, Video, Globe, Download } from 'lucide-react';
 import AnimationPreview from '@/components/AnimationPreview';
 import { generatePDF } from '@/lib/pdf-generator';
+import LandingPagePreview from '@/components/LandingPagePreview';
 import clsx from 'clsx';
 import { useSettings } from '@/context/SettingsContext';
 
@@ -118,20 +119,8 @@ export default function CreatePage() {
                                 )}
 
                                 {activeTab === 'web' && (
-                                    <div className="w-full h-full border border-gray-700 rounded-lg overflow-hidden bg-white relative group">
-                                        <div className="bg-gray-100 p-2 border-b flex gap-1">
-                                            <div className="w-2 h-2 rounded-full bg-red-400"></div>
-                                            <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
-                                            <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                                        </div>
-                                        <div className="p-8 text-center text-black">
-                                            <h1 className="text-3xl font-bold mb-4">{t.create.preview.welcome}, {selectedContact.name}!</h1>
-                                            <p className="text-gray-600 mb-8">{t.create.preview.landing}</p>
-                                            <button className="bg-blue-600 text-white px-6 py-2 rounded">{t.create.preview.check}</button>
-                                        </div>
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                                            <button className="bg-white text-black px-6 py-2 rounded-full font-bold">{t.create.preview.live}</button>
-                                        </div>
+                                    <div className="w-full h-full border border-gray-700 rounded-lg overflow-hidden relative shadow-2xl">
+                                        <LandingPagePreview contact={selectedContact} />
                                     </div>
                                 )}
                             </>
